@@ -2,36 +2,36 @@ import { useEffect, useState } from "react";
 import { IconSearch, IconX } from "@tabler/icons-react";
 
 export function Search() {
-  const [data, setData] = useState();
-  const [q, setQ] = useState("");
-  const [resultQ, setResultQ] = useState([]);
-
-  const url = "https://jsonplaceholder.typicode.com/users";
+  const [data, setData] = useState([]);
+  const [query, setQuery] = useState("");
+  const [result, setResult] = useState([]);
 
   useEffect(() => {
-    fetch(url)
-      .then((response) => response.json())
-      .then((users) => {
-        const dataUsers = users.map((user) => {
-          return user.name;
-        });
-        setData(dataUsers);
-      })
-      .catch((err) => `err: ${err}`);
+    async function getData() {
+      const url = "https://jsonplaceholder.typicode.com/users";
+      const response = await fetch(url);
+
+      if (!response.ok) return "Gagal mendapatkan data...";
+      const dataUsers = await response.json();
+
+      setData(dataUsers);
+    }
+    return getData;
   }, []);
 
-  function searchName(query) {
-    const filterUser = data.filter((user) =>
-      user.toLowerCase().includes(q.toLowerCase()),
+  function searchName(q) {
+    setQuery(q);
+
+    const findUser = data.filter((user) =>
+      user.name.toLowerCase().startsWith(q.toLowerCase().trim()),
     );
 
-    setQ(query);
-    setResultQ(filterUser);
+    setResult(findUser);
   }
 
   function clearSearch() {
-    setResultQ([]);
-    setQ("");
+    setResult([]);
+    setQuery("");
   }
 
   return (
@@ -44,11 +44,11 @@ export function Search() {
           id="name"
           name="name"
           className="border-none focus:outline-none  "
-          value={q}
+          value={query}
           onChange={(e) => searchName(e.target.value)}
           placeholder="Mau cari siapa ?"
         />
-        {q ? (
+        {query ? (
           <button onClick={clearSearch}>
             <IconX />
           </button>
@@ -57,9 +57,10 @@ export function Search() {
         )}
       </div>
       <p>hasil:</p>
+
       <ul>
-        {resultQ.map((result) => {
-          return <li key={result}>{result}</li>;
+        {result.map((user) => {
+          return <li key={user.id}>{user.name}</li>;
         })}
       </ul>
     </div>
