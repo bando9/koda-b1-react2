@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { IconSearch, IconX } from "@tabler/icons-react";
 
-function Search() {
+export function Search() {
   const [data, setData] = useState();
   const [q, setQ] = useState("");
   const [resultQ, setResultQ] = useState([]);
@@ -65,5 +65,3 @@ function Search() {
     </div>
   );
 }
-
-export default Search;
