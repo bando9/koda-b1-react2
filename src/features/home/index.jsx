@@ -38,7 +38,7 @@ export default function Home() {
           <div id="hero-image">
             <img
               className="rounded-xl w-3/4 md:w-full"
-              src="https://images.unsplash.com/photo-1687603921109-46401b201195?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D"
+              src="https://www.bluebirdgroup.com/storage/banners/6a6324ccb118e.jpg"
               alt="react image"
             />
           </div>

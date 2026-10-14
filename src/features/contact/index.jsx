@@ -2,12 +2,16 @@ import { useEffect, useState } from "react";
 import Navbar from "../../components/navbar";
 import { v4 as uuidv4 } from "uuid";
 
+const initialForm = {
+  name: "",
+  email: "",
+  message: "",
+  phone: "",
+  gender: "",
+  // subject: "",
+};
 function Contact() {
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
+  const [form, setForm] = useState(initialForm);
 
   const [messages, setMessages] = useState(() => {
     try {
@@ -32,22 +36,26 @@ function Contact() {
       name: form.name,
       email: form.email,
       message: form.message,
+      phone: form.phone,
+      gender: form.gender,
+      // subject: form.subject,
     };
+    console.log(createMessage);
 
     setMessages((prevMessages) => [createMessage, ...prevMessages]);
 
-    setForm({ name: "", email: "", message: "" });
+    setForm(initialForm);
   }
 
   function handleChange(event) {
     const { name, value } = event.target;
+    console.log(event.target);
+
     setForm((prev) => ({
       ...prev,
       [name]: value,
     }));
   }
-
-  console.log(messages.length);
 
   return (
     <div className="h-[200vh]">
@@ -64,6 +72,49 @@ function Contact() {
               name="name"
               placeholder="Ismail"
               value={form.name}
+              onChange={handleChange}
+            />
+          </div>
+
+          <fieldset className="space-y-2">
+            <legend>Apa jenis kelamin Anda?</legend>
+
+            <div className="grid grid-cols-2">
+              <div className="flex items-center gap-1">
+                <input
+                  type="radio"
+                  id="man"
+                  name="gender"
+                  value="man"
+                  checked={form.gender === "man"}
+                  onChange={handleChange}
+                />
+                <label htmlFor="man">Laki-laki</label>
+              </div>
+
+              <div className="flex items-center gap-1">
+                <input
+                  type="radio"
+                  id="woman"
+                  name="gender"
+                  value="woman"
+                  checked={form.gender === "woman"}
+                  onChange={handleChange}
+                />
+                <label htmlFor="woman">Perempuan</label>
+              </div>
+            </div>
+          </fieldset>
+
+          <div className="flex flex-col gap-2">
+            <label htmlFor="phone">Nomor Handphone</label>
+            <input
+              className="border border-cyan-400 rounded-lg py-1 pl-4 w-full"
+              type="tel"
+              id="phone"
+              name="phone"
+              placeholder="+6289xxx"
+              value={form.phone}
               onChange={handleChange}
             />
           </div>
@@ -97,25 +148,58 @@ function Contact() {
         </form>
       </div>
 
-      <div className="mt-20 mx-15 grid grid-cols-2 gap-5">
+      <div className="mt-20 mx-15">
         {messages.length !== 0 ? (
-          messages.map((msg) => {
+          messages.map((item) => {
             return (
-              <div key={msg.id} className="bg-cyan-50 px-5 py-3 rounded-xl">
-                <div className="flex gap-2">
-                  <p>Pesan dari:</p>
-                  <h3 className="font-semibold underline"> {msg.name}</h3>
+              <div
+                key={item.id}
+                className="bg-white p-5 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition space-y-3"
+              >
+                <div className="flex justify-between items-start border-b border-gray-100 pb-3">
+                  <div>
+                    <h3 className="font-semibold text-gray-800 capitalize">
+                      {item.name}
+                    </h3>
+                    <p className="text-xs text-gray-500">{item.email}</p>
+                    <div className="flex flex-col items-end gap-1">
+                      {item.gender && (
+                        <span
+                          className={`text-xs px-2.5 py-0.5 rounded-full font-medium ${
+                            item.gender === "man"
+                              ? "bg-blue-50 text-blue-600"
+                              : "bg-pink-50 text-pink-600"
+                          }`}
+                        >
+                          {item.gender === "man" ? "Laki-laki" : "Perempuan"}
+                        </span>
+                      )}
+                      {item.createdAt && (
+                        <span className="text-xs text-gray-400">
+                          {item.createdAt}
+                        </span>
+                      )}
+                    </div>
+                  </div>
                 </div>
-                <p>email: {msg.email}</p>
-                <p>pesan:</p>
-                <p>{msg.message}</p>
+
+                <p className="text-gray-700 text-sm whitespace-pre-line leading-relaxed">
+                  {item.message}
+                </p>
+
+                {item.phone && (
+                  <div className="pt-2 text-xs text-gray-500 border-t border-gray-50 flex items-center gap-1">
+                    <span>📞</span>
+                    <span>{item.phone}</span>
+                  </div>
+                )}
               </div>
             );
           })
         ) : (
-          <>
-            <h1>ga ada pesan</h1>
-          </>
+          <div className="text-center py-12 bg-white rounded-xl shadow-sm border border-gray-100 max-w-md mx-auto">
+            <p className="text-gray-500 mb-4">Belum ada pesan yang masuk.</p>
+          </div>
         )}
       </div>
     </div>

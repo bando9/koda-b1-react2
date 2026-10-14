@@ -1,10 +1,12 @@
+import { IconSearch } from "@tabler/icons-react";
 import { Link } from "react-router";
+// import logo from "/assets/images/logo.svg";
 
 function Navbar() {
   return (
     <header className="py-3.5 mx-10 md:flex md:justify-between mb-7">
       <Link to="/">
-        <h2 className="font-bold text-xl mb-5">React v19.3</h2>
+        <img src="/logo.svg" alt="bluebird logo" className="w-40" />
       </Link>
 
       <nav className="max-w-full md:flex md:flex-row items-center space-x-3 ">
@@ -19,9 +21,9 @@ function Navbar() {
             <Link to="/contact">Contact Us</Link>
           </li>
         </ul>
-        <button className="ml-2 px-5 h-10 rounded-lg cursor-pointer bg-black text-white">
-          GitHub
-        </button>
+        <Link className="ml-2  h-8 w-8 rounded-lg cursor-pointer bg-blue-600 text-white flex items-center justify-center">
+          <IconSearch />
+        </Link>
       </nav>
     </header>
   );
