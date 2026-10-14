@@ -1,3 +1,5 @@
+import Search from "./components/search";
+
 function App() {
   return (
     <>
@@ -71,6 +73,8 @@ function App() {
           </div>
         </section>
       </main>
+
+      <Search />
     </>
   );
 }
